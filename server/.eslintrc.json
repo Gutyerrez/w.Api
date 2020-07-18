@@ -1,5 +1,12 @@
 {
   "extends": [
     "plugin:adonis/typescriptApp"
+  ],
+  "semi": [
+    "error",
+    "always",
+    {
+      "omitLastInOneLineBlock": true
+    }
   ]
 }

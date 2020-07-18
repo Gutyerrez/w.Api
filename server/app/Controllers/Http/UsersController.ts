@@ -10,8 +10,10 @@ export default class UsersController {
     return users
   }
 
-  public async show(ctx: HttpContextContract, next) {
-    const id = Number(ctx.params.id);
+  public async show(ctx: HttpContextContract) {
+    const { id } = ctx.params;
+
+    console.log(id);
 
     const user = Database.from('users')
       .select('*')
