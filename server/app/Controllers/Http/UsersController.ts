@@ -10,6 +10,10 @@ export default class UsersController {
     return users
   }
 
+  public async store() {
+    // TODO not implemented-yet
+  }
+
   public async show(ctx: HttpContextContract) {
     const { id } = ctx.params;
 
@@ -23,4 +27,8 @@ export default class UsersController {
     return user;
   }
 
+  public async update() {
+    // TODO not implemented-yet
+  }
+  
 }
