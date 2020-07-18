@@ -19,8 +19,7 @@
   "providers": [
     "./providers/AppProvider",
     "@adonisjs/core",
-    "@adonisjs/lucid",
-    "@adonisjs/auth"
+    "@adonisjs/lucid"
   ],
   "metaFiles": [
     ".env",
