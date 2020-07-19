@@ -4,8 +4,7 @@ import Database from '@ioc:Adonis/Lucid/Database'
 export default class UsersController {
 
   public async index() {
-    const users = Database.from('users')
-      .select('*')
+    const users = Database.from('users').select('*')
 
     return users
   }
@@ -30,5 +29,5 @@ export default class UsersController {
   public async update() {
     // TODO not implemented-yet
   }
-  
+
 }

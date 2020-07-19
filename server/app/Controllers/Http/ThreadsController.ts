@@ -68,14 +68,14 @@ export default class ThreadsController {
     const closed = request.input('closed')
 
     const thread = {
-      id: Number(id),
       forum_id: Number(forum_id),
       promoted,
       sticky,
       closed
     }
 
-    const updated = await Database.from('threads').update(thread)
+    const updated = await Database.from('threads').where(id)
+      .update(thread)
 
     return {
       updated

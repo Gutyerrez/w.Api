@@ -40,10 +40,40 @@ Route
 
 Route
   .group(() => {
+    Route.get('/', 'CategoriesController.index')
+
+    Route.post('/', 'CategoriesController.store')
+
+    Route.put('/', 'CategoriesController.update')
+
+    Route.delete('/', 'CategoriesController.delete')
+  })
+  .prefix('/categories')
+  .middleware('auth')
+
+Route
+  .group(() => {
+    Route.get('/', 'ForumsController.index')
+    Route.get('/:id', 'ForumsController.show')
+
+    Route.post('/', 'ForumsController.store')
+
+    Route.put('/', 'ForumsController.update')
+
+    Route.delete('/', 'ForumsController.delete')
+  })
+  .prefix('/forums')
+  .middleware('auth')
+
+Route
+  .group(() => {
     Route.get('/', 'ThreadsController.index')
     Route.get('/:id', 'ThreadsController.show')
+
     Route.post('/', 'ThreadsController.store')
+
     Route.put('/', 'ThreadsController.update')
+
     Route.delete('/:id', 'ThreadsController.delete')
   })
   .prefix('/threads')
