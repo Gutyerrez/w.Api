@@ -14,8 +14,8 @@ export default class UsersController {
     // TODO not implemented-yet
   }
 
-  public async show(ctx: HttpContextContract) {
-    const { id } = ctx.params;
+  public async show({ params }: HttpContextContract) {
+    const { id } = params;
 
     console.log(id);
 

@@ -21,7 +21,7 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.get('/', async () => {
-  return { version: '0.1-ALPHA' }
+  return { 'Hyren API Version': '0.1-ALPHA' }
 })
 
 Route
