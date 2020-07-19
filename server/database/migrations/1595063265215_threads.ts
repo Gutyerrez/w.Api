@@ -12,7 +12,7 @@ export default class Threads extends BaseSchema {
       table.string('title', 255).notNullable()
       table.string('slug').nullable()
       table.boolean('promoted').notNullable().defaultTo(false)
-      table.boolean('sitcky').notNullable().defaultTo(false)
+      table.boolean('sticky').notNullable().defaultTo(false)
       table.boolean('closed').notNullable().defaultTo(false)
       table.integer('views').notNullable().defaultTo(0)
       table.integer('answers').notNullable().defaultTo(0)

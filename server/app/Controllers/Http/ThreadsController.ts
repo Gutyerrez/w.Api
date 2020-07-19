@@ -24,7 +24,7 @@ export default class ThreadsController {
       created_at
     }
 
-    const trx = await Database.transaction();
+    const trx = await Database.transaction()
 
     const insertedIds = await trx.table('threads').insert(thread)
       .returning('id')
@@ -60,12 +60,37 @@ export default class ThreadsController {
     return thread
   }
 
-  public async update() {
-    // TODO not implemented-yet
+  public async update({ request }: HttpContextContract) {
+    const id = request.input('id')
+    const forum_id = request.input('forum_id')
+    const promoted = request.input('promoted')
+    const sticky = request.input('sticky')
+    const closed = request.input('closed')
+
+    const thread = {
+      id: Number(id),
+      forum_id: Number(forum_id),
+      promoted,
+      sticky,
+      closed
+    }
+
+    const updated = await Database.from('threads').update(thread)
+
+    return {
+      updated
+    }
   }
 
-  public async delete() {
-    // TODO not implemented-yet
+  public async delete({ params }: HttpContextContract) {
+    const { id } = params;
+
+    const deleted = await Database.from('threads').where({ id })
+      .delete()
+
+    return {
+      deleted
+    }
   }
 
 }
