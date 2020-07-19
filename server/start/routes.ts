@@ -26,7 +26,14 @@ Route.get('/', async () => {
 
 Route
   .group(() => {
+    Route.post('/generate', 'AuthController.store')
+  })
+  .prefix('/auth')
+
+Route
+  .group(() => {
     Route.get('/', 'UsersController.index')
     Route.get('/:id', 'UsersController.show')
   })
   .prefix('/users')
+  .middleware('auth')
