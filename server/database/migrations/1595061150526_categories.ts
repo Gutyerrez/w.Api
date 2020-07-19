@@ -11,7 +11,6 @@ export default class Categories extends BaseSchema {
       table.string('slug').nullable()
       table.string('restrict_read').nullable()
       table.string('restrict_write').unsigned().defaultTo(Group.DEFAULT.name)
-      table.timestamps(true)
     })
   }
 

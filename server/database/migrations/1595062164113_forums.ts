@@ -20,7 +20,12 @@ export default class Forums extends BaseSchema {
       table.string('threads_restrict_move').defaultTo(Group.MANAGER.name)
       table.string('threads_restrict_close').defaultTo(Group.MANAGER.name)
       table.string('threads_fallback_forum_id').unsigned().nullable()
-      table.timestamps(true)
+
+      table.foreign('category_id').references('id').inTable('categories')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE')
+
+      table.foreign('parent_id').references('id').inTable('forums')
     })
   }
 

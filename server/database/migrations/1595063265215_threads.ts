@@ -20,7 +20,11 @@ export default class Threads extends BaseSchema {
       table.string('restrict_read').nullable()
       table.string('restrict_write').unsigned().defaultTo(Group.DEFAULT.name)
       table.timestamp('last_reply_at').nullable()
-      table.timestamps(true)
+      table.timestamps(true, true)
+
+      table.foreign('forum_id').references('id').inTable('forums')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE')
 
       table.foreign('user_id').references('id').inTable('users')
         .onDelete('CASCADE')

@@ -10,7 +10,15 @@ export default class Posts extends BaseSchema {
       table.integer('user_id').unsigned().notNullable()
       table.text('body').notNullable()
       table.integer('parent_id').unsigned().nullable()
-      table.timestamps(true)
+      table.timestamps(true, true)
+
+      table.foreign('thread_id').references('id').inTable('threads')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE')
+
+      table.foreign('user_id').references('id').inTable('users')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE')
     })
   }
 
