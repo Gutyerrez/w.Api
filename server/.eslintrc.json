@@ -2,7 +2,5 @@
   "extends": [
     "plugin:adonis/typescriptApp"
   ],
-  "rules": {
-    "semi": [ "off" ]
-  }
+  "rules": { }
 }
