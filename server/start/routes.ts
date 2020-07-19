@@ -37,3 +37,12 @@ Route
   })
   .prefix('/users')
   .middleware('auth')
+
+Route
+  .group(() => {
+    Route.get('/', 'ThreadsController.index')
+    Route.get('/:id', 'ThreadsController.show')
+    Route.post('/', 'ThreadsController.store')
+  })
+  .prefix('/threads')
+  // .middleware('auth')
