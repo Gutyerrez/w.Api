@@ -9,10 +9,12 @@ export default class Auth {
     if (!authorization) {
       return false
     }
+
+    authorization = authorization.split(' ')[1] || authorization
     
     try {
       jwt.verify(
-        authorization.split(' ')[1] || authorization,
+        authorization,
         Env.get('JWT_SECRET') as string
       )
     } catch (e) {
@@ -29,7 +31,7 @@ export default class Auth {
   }
 
   public async handle({ request }: HttpContextContract, next: () => Promise<void>) {
-    const authorization = request.headers()['authorization'] as string
+    let authorization = request.headers()['authorization'] as string
 
     const token = await this.authenticate(
       authorization,

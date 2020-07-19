@@ -6,21 +6,23 @@ import jwt from 'jsonwebtoken'
 export default class AuthController {
 
   public async store({ request }: HttpContextContract) {
+    const route = request.headers()['route'] || '/'
+
     const access_token = jwt.sign(
       {
-        route: request.url,
-        type: Env.get('JWT_PREFIX') as string
+        route,
+        prefix: Env.get('JWT_PREFIX') as string
       },
       Env.get('JWT_SECRET') as string,
       {
-        expiresIn: "15s"
+        expiresIn: Env.get('JWT_DURATION') as string,
       }
     )
 
     return {
       type: Env.get('JWT_PREFIX') as string,
-      access_token
-    };
+      access_token,
+    }
   }
 
 }
