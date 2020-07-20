@@ -93,3 +93,14 @@ Route
   })
   .prefix('/posts')
   .middleware('auth')
+
+  Route
+  .group(() => {
+    Route.get('/', 'ChangelogsController.index')
+
+    Route.post('/', 'ChangelogsController.store')
+
+    Route.delete('/:id', 'ChangelogsController.delete')
+  })
+  .prefix('/changelogs')
+  .middleware('auth')

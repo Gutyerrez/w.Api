@@ -55,8 +55,8 @@ export default class PostsController {
     }
   }
 
-  public async delete({ request }: HttpContextContract) {
-    const id = request.input('id')
+  public async delete({ params }: HttpContextContract) {
+    const { id } = params
 
     const deleted = await Database.from('posts')
       .where(id)
