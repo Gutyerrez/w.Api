@@ -23,18 +23,6 @@ export default class ChangelogsController {
     return changelogs
   }
 
-  public async show({ params }: HttpContextContract) {
-    const {
-      id
-    } = params
-
-    const changelog = await Database.from('changelogs')
-      .select('*')
-      .where(id)
-
-    return changelog
-  }
-
   public async store({ request }: HttpContextContract) {
     const title = request.input('title')
     const changes = request.input('changes')
@@ -95,7 +83,7 @@ export default class ChangelogsController {
     const { id } = params
 
     const deleted = await Database.from('changelogs')
-      .where(id)
+      .where('id', id)
       .delete()
 
     return {
