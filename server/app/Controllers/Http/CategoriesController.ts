@@ -4,7 +4,8 @@ import Database from '@ioc:Adonis/Lucid/Database'
 export default class CategoriesController {
 
   public async index() {
-    const categories = await Database.from('categories').select('*')
+    const categories = await Database.from('categories')
+      .select('*')
 
     return categories
   }
@@ -39,7 +40,8 @@ export default class CategoriesController {
       slug
     }
 
-    const updated = await Database.from('categories').where(id)
+    const updated = await Database.from('categories')
+      .where(id)
       .update(category)
 
     return {
@@ -50,7 +52,8 @@ export default class CategoriesController {
   public async delete({ request }: HttpContextContract) {
     const id = request.input('id')
 
-    const deleted = await Database.from('categories').where(id)
+    const deleted = await Database.from('categories')
+      .where(id)
       .delete()
 
     return {

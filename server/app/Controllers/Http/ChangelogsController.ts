@@ -15,7 +15,7 @@ export default class ChangelogsController {
       .where(
         'title',
         'like',
-        `%${title}%`
+        `%${title || ''}%`
       )
       .limit(limit || 0)
       .offset(offset || 0)
@@ -42,33 +42,40 @@ export default class ChangelogsController {
     const date = new Date()
 
     date.setHours(0)
+    date.setSeconds(0)
+    date.setMilliseconds(0)
 
-    const changelog = await Database.from('changelogs')
+    const changelog: {
+      id: string
+      changes: string
+    } = await Database.from('changelogs')
       .select('*')
-      .where(title)
+      .where('title', title)
       .where('created_at', '>=', date)
       .first()
 
     if (changelog) {
-      const storedChanges = [
-        ...changelog.changes,
-        ...changes
-      ]
+      const newChanges = JSON.parse(changelog.changes)
+
+      newChanges.push(changes)
 
       await Database.from('changelogs')
         .where('id', changelog.id)
         .update({
-          changes: storedChanges
+          changes: JSON.stringify(newChanges)
         })
 
       return {
         id: changelog.id,
-        changes: storedChanges
+        title,
+        changes: newChanges
       }
     } else {
       const changelog = {
         title,
-        changes
+        changes: JSON.stringify([
+          changes
+        ])
       }
 
       const generatedIds = await Database.table('changelogs')
@@ -79,11 +86,9 @@ export default class ChangelogsController {
 
       return {
         id: changelog_id,
-        ...title,
-        ...changes
+        ...changelog
       }
     }
-
   }
 
   public async delete({ params }: HttpContextContract) {
