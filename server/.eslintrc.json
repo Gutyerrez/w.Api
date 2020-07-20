@@ -1,6 +1,5 @@
 {
   "extends": [
     "plugin:adonis/typescriptApp"
-  ],
-  "rules": { }
+  ]
 }

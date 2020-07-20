@@ -3,8 +3,16 @@ import Database from '@ioc:Adonis/Lucid/Database'
 
 export default class UsersController {
 
-  public async index() {
-    const users = Database.from('users').select('*')
+  public async index({ request }: HttpContextContract) {
+    const {
+      limit,
+      offset
+    } = request.original()
+
+    const users = await Database.from('users')
+      .select('*')
+      .limit(limit || 0)
+      .offset(offset || 0)
 
     return users
   }
@@ -18,9 +26,9 @@ export default class UsersController {
 
     console.log(id);
 
-    const user = Database.from('users')
+    const user = await Database.from('users')
       .select('*')
-      .where('id', id)
+      .where(id)
       .first();
 
     return user;

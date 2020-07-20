@@ -3,9 +3,24 @@ import Database from '@ioc:Adonis/Lucid/Database'
 
 export default class ThreadsController {
 
-  public async index() {
+  public async index({ request }: HttpContextContract) {
+    const {
+      limit,
+      offset,
+      closed,
+      forum_id,
+      restrict_read
+    } = request.original()
+
     const threads = await Database.from('threads')
       .select('*')
+      .where({
+        forum_id: Number(forum_id),
+        closed: closed || false,
+        restrict_read: restrict_read || null
+      })
+      .limit(limit || 0)
+      .offset(offset || 0)
 
     return threads
   }

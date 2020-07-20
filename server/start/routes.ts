@@ -26,6 +26,8 @@ Route.get('/', async () => {
 
 Route
   .group(() => {
+    Route.post('/', 'MojangController.store')
+
     Route.post('/generate', 'AuthController.store')
   })
   .prefix('/auth')
@@ -77,4 +79,17 @@ Route
     Route.delete('/:id', 'ThreadsController.delete')
   })
   .prefix('/threads')
+  .middleware('auth')
+
+  Route
+  .group(() => {
+    Route.get('/', 'PostsController.index')
+
+    Route.post('/', 'PostsController.store')
+
+    Route.put('/', 'PostsController.update')
+
+    Route.delete('/:id', 'PostsController.delete')
+  })
+  .prefix('/posts')
   .middleware('auth')
