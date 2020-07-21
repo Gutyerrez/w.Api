@@ -1,3 +1,4 @@
+import Env from '@ioc:Adonis/Core/Env'
 import Database from '@ioc:Adonis/Lucid/Database'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { Discord } from '../../../misc/discord'
@@ -9,25 +10,19 @@ export default class DiscordController {
   public async store({ request }: HttpContextContract) {
     const code = request.input('code')
     const user_id = request.input('user_id')
-    // const token = request.input('token')
+    const token = request.input('token')
 
-    // const payload = jwt.decode(token)
-
-    // if (!payload) {
-    //   return {
-    //     code: 400,
-    //     message: 'Invalid payload token'
-    //   }
-    // }
-
-    // const payload_user_id = payload['user_id']
-
-    // if (payload_user_id !== user_id) {
-    //   return {
-    //     code: 401,
-    //     message: 'Invalid payload token'
-    //   }
-    // }
+    try {
+      !jwt.verify(
+        token,
+        Env.get('JWT_SECRET') as string
+      )
+    } catch(e) {
+      return {
+        code: 400,
+        message: 'Invalid payload token'
+      }
+    }
 
     const discordUser = await Discord.fetch(code)
 
