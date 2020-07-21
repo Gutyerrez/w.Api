@@ -9,25 +9,25 @@ export default class DiscordController {
   public async store({ request }: HttpContextContract) {
     const code = request.input('code')
     const user_id = request.input('user_id')
-    const token = request.input('token')
+    // const token = request.input('token')
 
-    const payload = jwt.decode(token)
+    // const payload = jwt.decode(token)
 
-    if (!payload) {
-      return {
-        code: 400,
-        message: 'Invalid payload token'
-      }
-    }
+    // if (!payload) {
+    //   return {
+    //     code: 400,
+    //     message: 'Invalid payload token'
+    //   }
+    // }
 
-    const payload_user_id = payload['user_id']
+    // const payload_user_id = payload['user_id']
 
-    if (payload_user_id !== user_id) {
-      return {
-        code: 401,
-        message: 'Invalid payload token'
-      }
-    }
+    // if (payload_user_id !== user_id) {
+    //   return {
+    //     code: 401,
+    //     message: 'Invalid payload token'
+    //   }
+    // }
 
     const discordUser = await Discord.fetch(code)
 
@@ -52,7 +52,7 @@ export default class DiscordController {
 
     const updated = await Database.from('users')
       .select('*')
-      .where('user_id', user_id)
+      .where('id', user_id)
       .update({
         discord_id: discordUser.id
       })

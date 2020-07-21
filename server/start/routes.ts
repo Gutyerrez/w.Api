@@ -81,7 +81,7 @@ Route
   .prefix('/threads')
   .middleware('auth')
 
-  Route
+Route
   .group(() => {
     Route.get('/', 'PostsController.index')
 
@@ -94,7 +94,7 @@ Route
   .prefix('/posts')
   .middleware('auth')
 
-  Route
+Route
   .group(() => {
     Route.get('/', 'ChangelogsController.index')
 
@@ -103,4 +103,7 @@ Route
     Route.delete('/:id', 'ChangelogsController.delete')
   })
   .prefix('/changelogs')
+  .middleware('auth')
+
+Route.post('/discord', 'DiscordController.store')
   .middleware('auth')
