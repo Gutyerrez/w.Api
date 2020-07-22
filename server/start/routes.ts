@@ -110,3 +110,9 @@ Route.post('/discord', 'DiscordController.store')
 
 Route.get('/staff', 'StaffController.index')
   .middleware('auth')
+
+Route
+  .group(() => {
+    Route.get('/', 'PunishmentsController.index')
+  })
+  .prefix('/punishments')

@@ -5,12 +5,15 @@ export default class UnpunishCategories extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
-      table.string('name').notNullable().unique()
+      table.string('name').primary().unique()
       table.string('display_name').notNullable()
       table.text('description').nullable()
       table.string('group').notNullable()
       table.boolean('enabled').notNullable().defaultTo(true)
+
+      table.foreign('group').references('name').inTable('groups')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE')
     })
   }
 
