@@ -107,3 +107,6 @@ Route
 
 Route.post('/discord', 'DiscordController.store')
   .middleware('auth')
+
+Route.get('/staff', 'StaffController.index')
+  .middleware('auth')

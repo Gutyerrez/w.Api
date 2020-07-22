@@ -18,7 +18,7 @@ export default class Threads extends BaseSchema {
       table.integer('answers').notNullable().defaultTo(0)
       table.boolean('answered').notNullable().defaultTo(false)
       table.string('restrict_read').nullable()
-      table.string('restrict_write').unsigned().defaultTo(Group.DEFAULT.name)
+      table.string('restrict_write').unsigned().defaultTo(Group.DEFAULT)
       table.timestamp('last_reply_at').nullable()
       table.timestamps(true, true)
 
