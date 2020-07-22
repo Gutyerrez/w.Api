@@ -19,7 +19,7 @@ export default class StaffController {
         '=',
         'group_due.group'
       )
-      .where('group_due.due_at', '>=', currentTime)
+      .where('group_due.due_at', '>', currentTime)
       .join(
         'users as user',
         'group_due.user_id',

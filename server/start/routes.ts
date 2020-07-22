@@ -36,6 +36,11 @@ Route
   .group(() => {
     Route.get('/', 'UsersController.index')
     Route.get('/:id', 'UsersController.show')
+
+    Route.get('/punishments/:user_id', 'UsersPunishmentsController.show')
+
+    Route.get('/groups/:user_id', 'UsersGroupsDueController.index')
+    Route.get('/groups/:user_id/:server', 'UsersGroupsDueController.show')
   })
   .prefix('/users')
   .middleware('auth')
@@ -114,5 +119,7 @@ Route.get('/staff', 'StaffController.index')
 Route
   .group(() => {
     Route.get('/', 'PunishmentsController.index')
+
+    Route.get('/:id', 'PunishmentsController.show')
   })
   .prefix('/punishments')
