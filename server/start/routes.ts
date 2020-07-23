@@ -27,6 +27,7 @@ Route.get('/', async () => {
 Route
   .group(() => {
     Route.post('/', 'MojangController.store')
+      .middleware('auth')
 
     Route.post('/generate', 'AuthController.store')
   })
