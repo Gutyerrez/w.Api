@@ -6,7 +6,7 @@ export default class UsersGroupsDue extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.integer('user_id').notNullable()
+      table.string('user_id').notNullable()
       table.string('group').notNullable()
       table.string('server').notNullable()
       table.timestamp('due_at').notNullable()
