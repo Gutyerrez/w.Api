@@ -44,7 +44,7 @@ export default class Punishments extends BaseSchema {
         .onDelete('CASCADE')
         .onUpdate('CASCADE')
 
-      table.foreign('unban_category').references('name').inTable('unpunish_categories')
+      table.foreign('unban_category').references('name').inTable('revoke_categories')
         .onDelete('CASCADE')
         .onUpdate('CASCADE')
     })
