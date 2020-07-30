@@ -5,7 +5,7 @@ export default class Users extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.uuid('id').primary()
+      table.string('id').primary()
       table.string('name', 16).notNullable().unique()
       table.integer('cash').defaultTo(0).notNullable()
       table.bigInteger('discord_id').nullable().unique()

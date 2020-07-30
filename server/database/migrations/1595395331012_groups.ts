@@ -5,7 +5,7 @@ export default class Groups extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.string('name').notNullable().primary().unique()
+      table.string('name').primary()
       table.string('display_name').notNullable()
       table.string('prefix').notNullable()
       table.string('suffix').nullable()

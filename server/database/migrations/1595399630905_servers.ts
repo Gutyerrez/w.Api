@@ -5,7 +5,7 @@ export default class Servers extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.string('name').primary().unique()
+      table.string('name').primary()
       table.string('display_name').notNullable()
     })
   }
