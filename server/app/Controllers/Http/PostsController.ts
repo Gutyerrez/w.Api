@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Database from '@ioc:Adonis/Lucid/Database'
+
+import Post from 'App/Models/Post'
 
 export default class PostsController {
 
@@ -12,11 +13,10 @@ export default class PostsController {
       parent_id
     } = request.original()
 
-    const posts = await Database.from('posts')
-      .select('*')
+    const posts = await Post.query()
       .where({
         thread_id: Number(thread_id),
-        user_id: Number(user_id),
+        user_id: user_id,
         parent_id: Number(parent_id) || null
       })
       .limit(limit || 0)
@@ -31,10 +31,10 @@ export default class PostsController {
     const parent_id = request.input('parent_id')
     const body = request.input('body')
 
-    const post = await Database.table('posts')
+    const post = await Post.query()
       .insert({
         thread_id: Number(thread_id),
-        user_id: Number(user_id),
+        user_id,
         parent_id: Number(parent_id) || null,
         body
       })
@@ -46,25 +46,21 @@ export default class PostsController {
     const id = request.input('id')
     const body = request.input('body')
 
-    const updated = await Database.from('posts')
-      .where(id)
+    const updated = await Post.query()
+      .where('id', id)
       .update(body)
 
-    return {
-      updated
-    }
+    return updated
   }
 
   public async delete({ params }: HttpContextContract) {
     const { id } = params
 
-    const deleted = await Database.from('posts')
-      .where(id)
+    const deleted = await Post.query()
+      .where('id', id)
       .delete()
 
-    return {
-      deleted
-    }
+    return deleted
   }
 
 }
