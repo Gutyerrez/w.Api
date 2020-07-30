@@ -1,7 +1,7 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class UnpunishCategories extends BaseSchema {
-  protected tableName = 'unpunish_categories'
+  protected tableName = 'revoke_categories'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {

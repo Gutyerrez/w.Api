@@ -7,8 +7,8 @@ export default class Forums extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.integer('category_id').unsigned()
-      table.integer('parent_id').unsigned().nullable()
+      table.integer('category_id').notNullable()
+      table.integer('parent_id').nullable()
       table.string('name').notNullable()
       table.string('description').nullable()
       table.string('slug').nullable()
@@ -19,7 +19,7 @@ export default class Forums extends BaseSchema {
       table.string('threads_restrict_write').defaultTo(Group.DEFAULT)
       table.string('threads_restrict_move').defaultTo(Group.MANAGER)
       table.string('threads_restrict_close').defaultTo(Group.MANAGER)
-      table.string('threads_fallback_forum_id').unsigned().nullable()
+      table.integer('threads_fallback_forum_id').unsigned().nullable()
 
       table.foreign('category_id').references('id').inTable('categories')
         .onDelete('CASCADE')
