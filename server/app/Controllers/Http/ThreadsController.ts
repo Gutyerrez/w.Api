@@ -1,5 +1,9 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+
 import Database from '@ioc:Adonis/Lucid/Database'
+
+import Thread from 'App/Models/Thread'
+import Post from 'App/Models/Post'
 
 export default class ThreadsController {
 
@@ -12,8 +16,7 @@ export default class ThreadsController {
       restrict_read
     } = request.original()
 
-    const threads = await Database.from('threads')
-      .select('*')
+    const threads = await Thread.query()
       .where({
         forum_id: Number(forum_id),
         closed: closed || false,
@@ -30,45 +33,40 @@ export default class ThreadsController {
     const user_id = request.input('user_id')
     const title = request.input('title')
     const body = request.input('body')
-    const created_at = new Date();
-
-    const thread = {
-      forum_id: Number(forum_id),
-      user_id: Number(user_id),
-      title,
-      created_at
-    }
 
     const trx = await Database.transaction()
 
-    const insertedIds = await trx.table('threads').insert(thread)
-      .returning('id')
+    const thread = new Thread()
 
-    const thread_id = Number(insertedIds[0])
+    thread.forumId = Number(forum_id)
+    thread.userId = user_id
+    thread.title = title
 
-    const post = {
-      thread_id,
-      user_id: Number(user_id),
-      body,
-      created_at
-    }
+    thread.useTransaction(trx)
 
-    await trx.table('posts').insert(post)
+    const post = new Post()
+
+    post.threadId = thread.id
+    post.userId = user_id
+    post.body = body
+
+    post.useTransaction(trx)
 
     trx.commit()
 
     return {
-      id: thread_id,
-      ...thread,
-      posts: [ post ]
+      id: thread.id,
+      forum_id: thread.forumId,
+      user_id: thread.userId,
+      title: thread.title,
+      posts: [ { body: post.body } ]
     }
   }
 
   public async show({ params }: HttpContextContract) {
     const { id } = params;
 
-    const thread = await Database.from('threads')
-      .select('*')
+    const thread = await Thread.query()
       .where('id', id)
       .first()
 
@@ -82,30 +80,26 @@ export default class ThreadsController {
     const sticky = request.input('sticky')
     const closed = request.input('closed')
 
-    const thread = {
-      forum_id: Number(forum_id),
-      promoted,
-      sticky,
-      closed
-    }
+    const updated = await Thread.query()
+      .where('id', id)
+      .update({
+        forum_id: Number(forum_id),
+        promoted: promoted,
+        sticky: sticky,
+        closed: closed
+      })
 
-    const updated = await Database.from('threads').where(id)
-      .update(thread)
-
-    return {
-      updated
-    }
+    return updated
   }
 
   public async delete({ params }: HttpContextContract) {
     const { id } = params;
 
-    const deleted = await Database.from('threads').where({ id })
+    const deleted = await Thread.query()
+      .where('id', id)
       .delete()
 
-    return {
-      deleted
-    }
+    return deleted
   }
 
 }

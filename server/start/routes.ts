@@ -38,10 +38,10 @@ Route
     Route.get('/', 'UsersController.index')
     Route.get('/:id', 'UsersController.show')
 
-    Route.get('/punishments/:user_id', 'UsersPunishmentsController.show')
+    Route.get('/:user_id/punishments', 'UsersPunishmentsController.show')
 
-    Route.get('/groups/:user_id', 'UsersGroupsDueController.index')
-    Route.get('/groups/:user_id/:server', 'UsersGroupsDueController.show')
+    Route.get('/:user_id/groups', 'UsersGroupsDueController.index')
+    Route.get('/:user_id/groups/:server', 'UsersGroupsDueController.show')
   })
   .prefix('/users')
   .middleware('auth')

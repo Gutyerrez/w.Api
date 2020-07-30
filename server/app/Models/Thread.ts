@@ -45,4 +45,10 @@ export default class Thread extends BaseModel {
   @column({ columnName: 'last_reply_at' })
   public lastReplyAt?: DateTime;
 
+  @column.dateTime({ columnName: 'created_at', autoCreate: true })
+  public createdAt: DateTime
+
+  @column.dateTime({ columnName: 'updated_at', autoCreate: true, autoUpdate: true })
+  public updatedAt: DateTime
+
 }

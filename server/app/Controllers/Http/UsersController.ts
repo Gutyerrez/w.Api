@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Database from '@ioc:Adonis/Lucid/Database'
+
+import User from 'App/Models/User'
 
 export default class UsersController {
 
@@ -9,8 +10,7 @@ export default class UsersController {
       offset
     } = request.original()
 
-    const users = await Database.from('users')
-      .select('*')
+    const users = await User.query()
       .limit(limit || 0)
       .offset(offset || 0)
 
@@ -24,14 +24,9 @@ export default class UsersController {
   public async show({ params }: HttpContextContract) {
     const { id } = params;
 
-    console.log(id);
+    const user = await User.findBy('id', id)
 
-    const user = await Database.from('users')
-      .select('*')
-      .where(id)
-      .first();
-
-    return user;
+    return user
   }
 
   public async update() {
