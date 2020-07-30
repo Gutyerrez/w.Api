@@ -1,33 +1,25 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Database from '@ioc:Adonis/Lucid/Database'
+
+import Category from 'App/Models/Category'
 
 export default class CategoriesController {
 
   public async index() {
-    const categories = await Database.from('categories')
-      .select('*')
-
-    return categories
+    return await Category.all()
   }
 
   public async store({ request }: HttpContextContract) {
     const name = request.input('name')
     const slug = request.input('slug')
 
-    const category = {
-      name,
-      slug
-    }
+    const category = new Category()
 
-    const generatedIds = await Database.table('categories')
-      .insert(category).returning('id')
+    category.name = name
+    category.slug = slug
 
-    const category_id = Number(generatedIds[0])
+    const result = await category.save()
 
-    return {
-      id: category_id,
-      ...category
-    }
+    return result.$original
   }
 
   public async update({ request }: HttpContextContract) {
@@ -35,30 +27,24 @@ export default class CategoriesController {
     const name = request.input('name')
     const slug = request.input('slug')
 
-    const category = {
-      name,
-      slug
-    }
+    const updated = await Category.query()
+      .where('id', id)
+      .update({
+        name,
+        slug
+      })
 
-    const updated = await Database.from('categories')
-      .where(id)
-      .update(category)
-
-    return {
-      updated
-    }
+    return updated
   }
 
   public async delete({ request }: HttpContextContract) {
     const id = request.input('id')
 
-    const deleted = await Database.from('categories')
-      .where(id)
+    const deleted = await Category.query()
+      .where('id', id)
       .delete()
 
-    return {
-      deleted
-    }
+    return deleted
   }
 
 }

@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Database from '@ioc:Adonis/Lucid/Database'
+
+// import Changelog from 'App/Models/Changelog'
 
 export default class ChangelogsController {
 
