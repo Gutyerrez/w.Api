@@ -15,6 +15,9 @@ export default class Post extends BaseModel {
   @column()
   public body: string
 
+  @column({ columnName: 'parent_id' })
+  public parentId?: number
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
