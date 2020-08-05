@@ -34,35 +34,33 @@ export default class ThreadsController {
     const title = request.input('title')
     const body = request.input('body')
 
-    const trx = await Database.transaction()
+    const thread = await Database.transaction(async (trx) => {
+      const thread = await Thread.create({
+        forumId: Number(forum_id),
+        userId: user_id,
+        title: title,
+      }, {
+        client: trx
+      })
 
-    const thread = new Thread()
+      const post = await Post.create({
+        threadId: thread.id,
+        userId: user_id,
+        body: body
+      }, {
+        client: trx
+      })
 
-    thread.forumId = Number(forum_id)
-    thread.userId = user_id
-    thread.title = title
-
-    thread.useTransaction(trx)
-
-    const post = await Post.create({
-
+      return {
+        id: thread.id,
+        forum_id: thread.forumId,
+        user_id: thread.userId,
+        title: thread.title,
+        posts: [ { body: post.body } ]
+      }
     })
 
-    post.threadId = thread.id
-    post.userId = user_id
-    post.body = body
-
-    post.useTransaction(trx)
-
-    trx.commit()
-
-    return {
-      id: thread.id,
-      forum_id: thread.forumId,
-      user_id: thread.userId,
-      title: thread.title,
-      posts: [ { body: post.body } ]
-    }
+    return thread
   }
 
   public async show({ params }: HttpContextContract) {
