@@ -1,11 +1,13 @@
-import Database from '@ioc:Adonis/Lucid/Database'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+
+import Punishment from 'App/Models/Punishment'
 
 export default class PunishmentsController {
 
   public async index() {
-    const punishments = await Database.from('punishments as punishment')
-      .select('*')
+    const punishments = await Punishment.query()
+      .where('created_at', '>=', 'CURRENT_DATE')
+      .limit(7)
 
     return punishments
   }
@@ -13,8 +15,7 @@ export default class PunishmentsController {
   public async show({ params }: HttpContextContract) {
     const { id } = params
 
-    const punishment = await Database.from('punishments as punishment')
-      .select('*')
+    const punishment = await Punishment.query()
       .where('id', id)
       .first()
 

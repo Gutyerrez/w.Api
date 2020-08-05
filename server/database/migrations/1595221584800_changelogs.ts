@@ -1,6 +1,7 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class Changelogs extends BaseSchema {
+
   protected tableName = 'changelogs'
 
   public async up () {
@@ -15,4 +16,5 @@ export default class Changelogs extends BaseSchema {
   public async down () {
     this.schema.dropTable(this.tableName)
   }
+
 }

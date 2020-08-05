@@ -26,17 +26,13 @@ export default class ShortsController {
     const name = request.input('name')
     const original_url = request.input('original_url')
 
-    try {
-      const shortedUrl = await Short.create({
-        userId: user_id,
-        name,
-        originalUrl: original_url
-      })
+    const shortedUrl = await Short.create({
+      userId: user_id,
+      name,
+      originalUrl: original_url
+    })
 
-      return shortedUrl.$original
-    } catch (error) {
-      return error
-    }
+    return shortedUrl.$original
   }
 
 }

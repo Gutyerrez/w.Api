@@ -1,9 +1,11 @@
 import Env from '@ioc:Adonis/Core/Env'
-import Database from '@ioc:Adonis/Lucid/Database'
+
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { Discord } from '../../../misc/discord'
 
 import jwt from 'jsonwebtoken'
+
+import User from 'App/Models/User'
 
 export default class DiscordController {
 
@@ -33,8 +35,7 @@ export default class DiscordController {
       }
     }
 
-    const exists = await Database.from('users')
-      .select('*')
+    const exists = await User.query()
       .where('discord_id', discordUser.id)
       .first()
 
@@ -45,16 +46,13 @@ export default class DiscordController {
       }
     }
 
-    const updated = await Database.from('users')
-      .select('*')
+    const updated = await User.query()
       .where('id', user_id)
       .update({
         discord_id: discordUser.id
       })
 
-    return {
-      updated
-    }
+    return updated
   }
 
 }

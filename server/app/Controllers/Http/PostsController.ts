@@ -31,14 +31,12 @@ export default class PostsController {
     const parent_id = request.input('parent_id')
     const body = request.input('body')
 
-    const post = new Post()
-
-    post.threadId = Number(thread_id)
-    post.userId = user_id
-    post.parentId = Number(parent_id) || undefined
-    post.body = body
-
-    await post.save()
+    const post = await Post.create({
+      threadId: Number(thread_id),
+      userId: user_id,
+      parentId: Number(parent_id) || undefined,
+      body: body
+    })
 
     return post
   }

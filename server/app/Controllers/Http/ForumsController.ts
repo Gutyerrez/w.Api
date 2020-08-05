@@ -1,18 +1,17 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Database from '@ioc:Adonis/Lucid/Database'
+
+import Forum from 'App/Models/Forum'
 
 export default class ForumsController {
 
   public async index() {
-    const forums = await Database.from('forums').select()
-
-    return forums
+    return await Forum.query()
   }
 
   public async show({ params }: HttpContextContract) {
     const { id } = params
 
-    const forum = await Database.from('forums').select('*')
+    const forum = await Forum.query()
       .where(id)
 
     return forum
@@ -25,22 +24,15 @@ export default class ForumsController {
     const description = request.input('description')
     const slug = request.input('slug')
 
-    const forum = {
-      category_id: Number(category_id),
-      parent_id: Number(parent_id),
+    const forum = await Forum.create({
+      categoryId: Number(category_id),
+      parentId: Number(parent_id),
       name,
       description,
       slug
-    }
+    })
 
-    const generatedIds = await Database.table('forums').insert(forum).returning('id')
-
-    const forum_id = Number(generatedIds[0])
-
-    return {
-      id: forum_id,
-      ...forum
-    }
+    return forum.$original
   }
 
   public async update({ request }: HttpContextContract) {
@@ -51,31 +43,27 @@ export default class ForumsController {
     const description = request.input('description')
     const slug = request.input('slug')
 
-    const forum = {
-      category_id: Number(category_id),
-      parent_id: Number(parent_id),
-      name,
-      description,
-      slug
-    }
+    const updated = await Forum.query()
+      .where('id', id)
+      .update({
+        categoryId: Number(category_id),
+        parentId: Number(parent_id),
+        name,
+        description,
+        slug
+      })
 
-    const updated = await Database.from('forums').where(id)
-      .update(forum)
-
-    return {
-      updated
-    }
+    return updated
   }
 
   public async delete({ params  }: HttpContextContract) {
     const id = params;
 
-    const deleted = await Database.from('forums').where(id)
+    const deleted = await Forum.query()
+      .where('id', id)
       .delete()
 
-    return {
-      deleted
-    }
+    return deleted
   }
 
 }

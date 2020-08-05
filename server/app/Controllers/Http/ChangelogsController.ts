@@ -1,95 +1,73 @@
-// import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-// import Changelog from 'App/Models/Changelog'
+import Changelog from 'App/Models/Changelog'
 
 export default class ChangelogsController {
 
-  // public async index({ request }: HttpContextContract) {
-    // const {
-    //   limit,
-    //   offset,
-    //   title
-    // } = request.original()
+  public async index({ request }: HttpContextContract) {
+    const {
+      limit,
+      offset,
+      title
+    } = request.original()
 
-    // const changelogs = await Database.from('changelogs')
-    //   .select('*')
-    //   .where(
-    //     'title',
-    //     'like',
-    //     `%${title || ''}%`
-    //   )
-    //   .limit(limit || 0)
-    //   .offset(offset || 0)
+    const changelogs = await Changelog.query()
+      .where(
+        'title',
+        'like',
+        `%${title || ''}%`
+      )
+      .limit(limit || 0)
+      .offset(offset || 0)
 
-    // return changelogs
-  // }
+    return changelogs
+  }
 
-  // public async store({ request }: HttpContextContract) {
-    // const title = request.input('title')
-    // const changes = request.input('changes')
+  public async store({ request }: HttpContextContract) {
+    const title = request.input('title')
+    const changes = request.input('changes')
 
-    // const date = new Date()
+    const changelog = await Changelog.query()
+      .where('title', title)
+      .where('created_at', '>=', 'CURRENT_DATE')
+      .first()
 
-    // date.setHours(0)
-    // date.setSeconds(0)
-    // date.setMilliseconds(0)
+    if (changelog) {
+      const newChanges = JSON.parse(changelog.changes)
 
-    // const changelog: {
-    //   id: string
-    //   changes: string
-    // } = await Database.from('changelogs')
-    //   .select('*')
-    //   .where('title', title)
-    //   .where('created_at', '>=', date)
-    //   .first()
+      newChanges.push(changes)
 
-    // if (changelog) {
-    //   const newChanges = JSON.parse(changelog.changes)
+      await Changelog.query()
+        .where('id', changelog.id)
+        .update({
+          changes: JSON.stringify(newChanges)
+        })
 
-    //   newChanges.push(changes)
+      return {
+        id: changelog.id,
+        title,
+        changes: newChanges
+      }
+    } else {
+      const changelog = await Changelog.create({
+        title,
+        changes: JSON.stringify([
+          changes
+        ])
+      })
 
-    //   await Database.from('changelogs')
-    //     .where('id', changelog.id)
-    //     .update({
-    //       changes: JSON.stringify(newChanges)
-    //     })
+      return changelog.$original
+    }
+  }
 
-    //   return {
-    //     id: changelog.id,
-    //     title,
-    //     changes: newChanges
-    //   }
-    // } else {
-    //   const changelog = {
-    //     title,
-    //     changes: JSON.stringify([
-    //       changes
-    //     ])
-    //   }
+  public async delete({ params }: HttpContextContract) {
+    const { id } = params
 
-    //   const generatedIds = await Database.table('changelogs')
-    //     .insert(changelog)
-    //     .returning('id')
+    const deleted = await Changelog.query()
+      .where('id', id)
+      .delete()
 
-    //   const changelog_id = Number(generatedIds[0])
-
-    //   return {
-    //     id: changelog_id,
-    //     ...changelog
-    //   }
-    // }
-  // }
-
-  // public async delete({ params }: HttpContextContract) {
-    // const { id } = params
-
-    // const deleted = await Database.from('changelogs')
-    //   .where('id', id)
-    //   .delete()
-
-    // return {
-    //   deleted
-    // }
-  // }
+    return deleted
+  }
 
 }
