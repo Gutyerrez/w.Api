@@ -1,7 +1,11 @@
 import { DateTime } from 'Luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
 
-export default class GroupDue extends BaseModel {
+import User from 'App/Models/User'
+
+export default class UserGroupDue extends BaseModel {
+
+  static table = 'users_groups_due'
 
   @column({ isPrimary: true })
   public id: number
@@ -17,5 +21,8 @@ export default class GroupDue extends BaseModel {
 
   @column({ columnName: 'due_at' })
   public dueAt: DateTime
+
+  @belongsTo(() => User)
+  public user: BelongsTo<typeof User>
 
 }

@@ -1,8 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-import GroupDue from 'App/Models/GroupDue'
-
-GroupDue.table = 'users_groups_due'
+import UserGroupDue from 'App/Models/UserGroupDue'
 
 export default class UsersGroupDuesController {
 
@@ -11,7 +9,7 @@ export default class UsersGroupDuesController {
 
     const currentTime = new Date()
 
-    const groupsDue = await GroupDue.query()
+    const groupsDue = await UserGroupDue.query()
       .where('user_id', user_id)
       .where('due_at', '>', currentTime)
 
@@ -23,7 +21,7 @@ export default class UsersGroupDuesController {
 
     const currentTime = new Date()
 
-    const groupsDue = await GroupDue.query()
+    const groupsDue = await UserGroupDue.query()
       .where('user_id', user_id)
       .where('due_at', '>', currentTime)
       .where('server', server)

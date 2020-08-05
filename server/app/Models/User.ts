@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+
+import UserGroupDue from 'App/Models/UserGroupDue'
 
 export default class User extends BaseModel {
 
@@ -41,5 +43,8 @@ export default class User extends BaseModel {
 
   @column.dateTime({ columnName: 'updated_at', autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @hasMany(() => UserGroupDue)
+  public groups: HasMany<typeof UserGroupDue>
 
 }

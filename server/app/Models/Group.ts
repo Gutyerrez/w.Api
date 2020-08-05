@@ -1,4 +1,7 @@
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, manyToMany, ManyToMany } from '@ioc:Adonis/Lucid/Orm'
+
+import User from './User'
+import UserGroupDue from './UserGroupDue'
 
 export default class Group extends BaseModel {
 
@@ -25,5 +28,19 @@ export default class Group extends BaseModel {
 
   @column({ columnName: 'discord_role_id' })
   public discordRoleId?: number
+
+  @manyToMany(() => User, {
+    localKey: 'name',
+    pivotForeignKey: 'group',
+    relatedKey: 'id',
+    pivotRelatedForeignKey: 'user_id',
+    pivotTable: UserGroupDue.table,
+    onQuery: (query) => {
+      const currentTime = new Date()
+
+      query.where('users_groups_due.due_at', '>', currentTime)
+    }
+  })
+  public users: ManyToMany<typeof User>
 
 }

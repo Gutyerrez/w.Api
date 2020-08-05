@@ -44,7 +44,9 @@ export default class ThreadsController {
 
     thread.useTransaction(trx)
 
-    const post = new Post()
+    const post = await Post.create({
+
+    })
 
     post.threadId = thread.id
     post.userId = user_id
