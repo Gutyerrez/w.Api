@@ -6,7 +6,7 @@ export default class PunishmentsController {
 
   public async index() {
     const punishments = await Punishment.query()
-      .where('created_at', '>=', 'CURRENT_DATE')
+      .whereRaw('created_at >= CURRENT_DATE')
       .limit(7)
 
     return punishments

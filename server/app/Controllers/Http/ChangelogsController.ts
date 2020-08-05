@@ -29,7 +29,7 @@ export default class ChangelogsController {
 
     const changelog = await Changelog.query()
       .where('title', title)
-      .where('created_at', '>=', 'CURRENT_DATE')
+      .whereRaw('created_at >= CURRENT_DATE')
       .first()
 
     if (changelog) {

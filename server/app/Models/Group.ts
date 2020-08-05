@@ -36,7 +36,7 @@ export default class Group extends BaseModel {
     pivotRelatedForeignKey: 'user_id',
     pivotTable: UserGroupDue.table,
     onQuery: (query) => {
-      query.where('users_groups_due.due_at', '>', 'CURRENT_DATE')
+      query.whereRaw('users_groups_due.due_at > CURRENT_DATE')
     }
   })
   public users: ManyToMany<typeof User>
