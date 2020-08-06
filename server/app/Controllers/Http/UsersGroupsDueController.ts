@@ -7,11 +7,9 @@ export default class UsersGroupDuesController {
   public async index({ params }: HttpContextContract) {
     const { user_id } = params
 
-    const currentTime = new Date()
-
     const groupsDue = await UserGroupDue.query()
       .where('user_id', user_id)
-      .where('due_at', '>', currentTime)
+      .whereRaw('due_at > CURRENT_TIME()')
 
     return groupsDue
   }
@@ -19,11 +17,9 @@ export default class UsersGroupDuesController {
   public async show({ params }: HttpContextContract) {
     const { user_id, server } = params
 
-    const currentTime = new Date()
-
     const groupsDue = await UserGroupDue.query()
       .where('user_id', user_id)
-      .where('due_at', '>', currentTime)
+      .whereRaw('due_at > CURRENT_TIME()')
       .where('server', server)
 
     return groupsDue
