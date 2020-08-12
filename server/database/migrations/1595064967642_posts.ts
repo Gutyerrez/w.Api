@@ -7,7 +7,7 @@ export default class Posts extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.integer('thread_id').unsigned().notNullable()
-      table.string('user_id').unsigned().notNullable()
+      table.string('user_id', 36).unsigned().notNullable()
       table.text('body').notNullable()
       table.integer('parent_id').unsigned().nullable()
       table.timestamps(true, true)

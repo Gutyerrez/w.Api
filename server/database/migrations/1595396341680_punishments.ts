@@ -8,8 +8,8 @@ export default class Punishments extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('user_id').notNullable()
-      table.string('staffer_id').notNullable()
+      table.string('user_id', 36).notNullable()
+      table.string('staffer_id', 36).notNullable()
       table.timestamp('start_time').nullable()
       table.enum('type', [
         Type.BAN,
@@ -20,7 +20,7 @@ export default class Punishments extends BaseSchema {
       table.bigInteger('duration').notNullable()
       table.string('custom_reason').nullable()
       table.string('proof')
-      table.string('unban_staffer_id')
+      table.string('unban_staffer_id', 36)
       table.timestamp('unban_time')
       table.string('unban_reason')
       table.string('unban_category')

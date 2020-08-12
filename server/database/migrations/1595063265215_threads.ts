@@ -8,7 +8,7 @@ export default class Threads extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.integer('forum_id').notNullable()
-      table.string('user_id').notNullable()
+      table.string('user_id', 36).notNullable()
       table.string('title', 255).notNullable()
       table.string('slug').nullable()
       table.boolean('promoted').notNullable().defaultTo(false)
